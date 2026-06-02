@@ -35,7 +35,7 @@ public class FuncionarioController {
         return ResponseEntity.ok(lista);
     }
 
-    // Pesquisar um funcionário por ID
+    // Pesquisar funcionário por ID
     @GetMapping("/{id}")
     public ResponseEntity<Funcionario> buscarPorId(@PathVariable Long id) {
         Funcionario funcionario = funcionarioService.buscarPorId(id);
