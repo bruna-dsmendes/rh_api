@@ -44,4 +44,41 @@ public class FuncionarioService {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado!"));
     }
+    public Funcionario atualizar(Long id, Funcionario funcionarioAtualizado) {
+        Funcionario funcionarioExistente = buscarPorId(id);
+
+        // Se mudou o e-mail, checará se o novo já existe em outro cadastro
+        if (!funcionarioExistente.getEmail().equals(funcionarioAtualizado.getEmail())) {
+            if (funcionarioRepository.findByEmail(funcionarioAtualizado.getEmail()).isPresent()) {
+                throw new RuntimeException("Este E-mail já está em uso por outro funcionário!");
+            }
+            funcionarioExistente.setEmail(funcionarioAtualizado.getEmail());
+        }
+
+        // Validação de CPF: Mesmo raciocínio
+        if (!funcionarioExistente.getCpf().equals(funcionarioAtualizado.getCpf())) {
+            if (funcionarioRepository.findByCpf(funcionarioAtualizado.getCpf()).isPresent()) {
+                throw new RuntimeException("Este CPF já está em uso por outro funcionário!");
+            }
+            funcionarioExistente.setCpf(funcionarioAtualizado.getCpf());
+        }
+
+        // Atualiza os demais campos
+        funcionarioExistente.setNome(funcionarioAtualizado.getNome());
+        funcionarioExistente.setSalario(funcionarioAtualizado.getSalario());
+        funcionarioExistente.setDataAdmissao(funcionarioAtualizado.getDataAdmissao());
+
+        // Se alterou o departamento, valida se o novo existe
+        if (funcionarioAtualizado.getDepartamento() != null && funcionarioAtualizado.getDepartamento().getId() != null) {
+            Departamento novoDepto = departamentoService.buscarPorId(funcionarioAtualizado.getDepartamento().getId());
+            funcionarioExistente.setDepartamento(novoDepto);
+        }
+
+        return funcionarioRepository.save(funcionarioExistente);
+    }
+
+    public void deletar(Long id) {
+        Funcionario funcionario = buscarPorId(id);
+        funcionarioRepository.delete(funcionario);
+    }
 }

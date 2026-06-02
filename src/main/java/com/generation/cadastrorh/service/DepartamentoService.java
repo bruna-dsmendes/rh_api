@@ -21,9 +21,25 @@ public class DepartamentoService {
     public List<Departamento> listarTodos() {
         return departamentoRepository.findAll();
     }
+    
 // listar todos os departamentos
     public Departamento buscarPorId(Long id) {
         return departamentoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Departamento não encontrado com o ID: " + id));
+    }
+    
+    public Departamento atualizar(Long id, Departamento departamentoAtualizado) {
+        Departamento departamentoExistente = buscarPorId(id);
+        
+        // Atualiza os campos permitidos
+        departamentoExistente.setNome(departamentoAtualizado.getNome());
+        departamentoExistente.setSigla(departamentoAtualizado.getSigla());
+        
+        return departamentoRepository.save(departamentoExistente);
+    }
+
+    public void deletar(Long id) {
+        Departamento departamento = buscarPorId(id);
+        departamentoRepository.delete(departamento);
     }
 }
