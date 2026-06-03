@@ -4,9 +4,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +42,18 @@ public class DepartamentoController {
     public ResponseEntity<Departamento> buscarPorId(@PathVariable Long id) {
         Departamento departamento = departamentoService.buscarPorId(id);
         return ResponseEntity.ok(departamento);
+    }
+    
+    // Atualiza o departamento
+    @PutMapping("/{id}")
+    public ResponseEntity<Departamento> atualizar(@PathVariable Long id, @RequestBody Departamento departamento) {
+        Departamento atualizado = departamentoService.atualizar(id, departamento);
+        return ResponseEntity.ok(atualizado);
+    }
+    // Deleta o departamento 
+    @DeleteMapping("/{id}") 
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        departamentoService.deletar(id);
+        return ResponseEntity.noContent().build(); // Retorna o status 204 No Content
     }
 }

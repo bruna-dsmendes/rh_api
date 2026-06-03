@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +38,8 @@ public class Funcionario {
     @ManyToOne
     @JoinColumn(name = "departamento_id", nullable = false)
     private Departamento departamento;
+    
+    
 
 	public Long getId() {
 		return id;
@@ -93,5 +97,49 @@ public class Funcionario {
 		this.departamento = departamento;
 	}
     
-    
+	@Enumerated(EnumType.STRING)
+	private Cargo cargo;
+
+	private boolean optaValeTransporte;
+
+	private BigDecimal valorGastoTransporteMensal; // Custo real do VT que a empresa gastaria
+
+	private boolean estaDeFerias;
+
+
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	public boolean isOptaValeTransporte() {
+		return optaValeTransporte;
+	}
+
+	public void setOptaValeTransporte(boolean optaValeTransporte) {
+		this.optaValeTransporte = optaValeTransporte;
+	}
+
+	public BigDecimal getValorGastoTransporteMensal() {
+		return valorGastoTransporteMensal;
+	}
+
+	public void setValorGastoTransporteMensal(BigDecimal valorGastoTransporteMensal) {
+		this.valorGastoTransporteMensal = valorGastoTransporteMensal;
+	}
+
+	public boolean isEstaDeFerias() {
+		return estaDeFerias;
+	}
+
+	public void setEstaDeFerias(boolean estaDeFerias) {
+		this.estaDeFerias = estaDeFerias;
+	}
+	
+	
+	
 }
